@@ -56,7 +56,8 @@ public class SuperBalanced {
     r1.insertLeft(3);
     Node l2 = root.insertLeft(2);
     l2.insertRight(3);
-    l2.insertLeft(3);*/
+    l2.insertLeft(3);
+    l2.isertLeft(3);*/
 
     System.out.println(isSuperBalanced(root));
   }
