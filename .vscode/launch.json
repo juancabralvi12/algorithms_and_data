@@ -1,0 +1,32 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - CountDistinctSubstrings",
+            "request": "launch",
+            "mainClass": "CountDistinctSubstrings",
+            "projectName": "algorithms_and_ds_d0554036"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - SubArraySumToK",
+            "request": "launch",
+            "mainClass": "SubArraySumToK",
+            "projectName": "algorithms_and_ds_d0554036"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - KEmptySlots",
+            "request": "launch",
+            "mainClass": "KEmptySlots",
+            "projectName": "algorithms_and_ds_d0554036"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Knapsack",
+            "request": "launch",
+            "mainClass": "Knapsack",
+            "projectName": "algorithms_and_ds_d0554036"
+        }
+    ]
+}

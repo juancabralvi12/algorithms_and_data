@@ -1,4 +1,3 @@
-package hashing;
 /* second
 
 There is a garden with N slots. In each slot, there is a flower. The N flowers will bloom one by one in N days. In each day, there will be exactly one flower blooming and it will be in the status of blooming since then.
@@ -38,14 +37,10 @@ The given array will be in the range [1, 20000].
 * Day 2: [1, 1,1]
 *
 * */
+//package hashing;
 
-
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class KEmptySlots {
-
-
-
 
 }

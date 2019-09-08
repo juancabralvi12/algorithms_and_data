@@ -11,6 +11,7 @@ public class Parentheses {
   }
 
   public static List<String> removeInvalidParentheses(String s) {
+    System.out.println(-1/2);
     helper(0,0,s,"",0);
     return null;
   }
