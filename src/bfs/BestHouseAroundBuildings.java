@@ -79,7 +79,7 @@ public class BestHouseAroundBuildings {
         int x;
         int y;
         int distance;
-        Point winner;
+        List<Point> winners;
 
         int [][] neighbors = new int[][]{
                 {0, -1}, // left
@@ -113,6 +113,7 @@ public class BestHouseAroundBuildings {
             q.add(this);
             this.distance = distance;
             this.seen = seen;
+            this.winners = new ArrayList<>();
         }
 
         @Override
@@ -139,14 +140,15 @@ public class BestHouseAroundBuildings {
             return other.x == this.x && other.y == this.y;
         }
 
-        public Point getWinner() {
-            return winner;
+        public List<Point> getPossibleWinners() {
+            return winners;
         }
 
         public boolean compute(Map<Point, Integer> map, int[][] grid, int buildings) {
             int size = q.size();
 
             boolean still = false;
+            boolean found = false;
 
             while (size > 0) {
                 still = true;
@@ -158,17 +160,20 @@ public class BestHouseAroundBuildings {
                     if (map.get(neighbor) == null) {
                         map.put(neighbor, 1);
                         if(buildings == 1) {
-                            winner = neighbor;
+                            winners.add(neighbor);
                             return false;
                         }
                     } else {
                         int count = map.get(neighbor) + 1;
                         map.put(neighbor, count);
                         if (count == buildings) {
-                            winner = neighbor;
-                            return false;
+                            winners.add(neighbor);
+                            found = true;
                         }
                     }
+                }
+                if(found){
+                    return false;
                 }
                 size--;
             }
@@ -179,25 +184,28 @@ public class BestHouseAroundBuildings {
         public int computeDistance(Point target, int[][] grid) {
             Queue<Point> q = new LinkedList<>();
             q.add(this);
-            int size = q.size();
+
 
             Set<Point> seen = new HashSet<>();
             int sum = 0;
 
 
-            while (size > 0) {
-                // add possible neighbors
-                Point c = q.poll();
+            while (!q.isEmpty()) {
+                int size = q.size();
+                sum++;
+                while (size > 0) {
+                    // add possible neighbors
+                    Point c = q.poll();
 
-                List<Point> neighbors = c.getNeighbors(grid, seen);
-                for (Point neighbor : neighbors ) {
-                    sum++;
-                    if(neighbor.x == neighbor.x && neighbor.y == target.y){
-                        return sum;
+                    List<Point> neighbors = c.getNeighbors(grid, seen);
+                    for (Point neighbor : neighbors) {
+                        if (neighbor.x == target.x && neighbor.y == target.y) {
+                            return sum;
+                        }
+                        q.add(neighbor);
                     }
-                    q.add(neighbor);
+                    size--;
                 }
-                size--;
             }
             return sum;
         }
@@ -206,7 +214,7 @@ public class BestHouseAroundBuildings {
     }
 
     public static void main(String []args){
-        int [][]grid = new int[][] {
+        /*int [][]grid = new int[][] {
                 {1,0,2,0,1},
                 {0,0,0,0,0},
                 {0,0,1,0,0}};
@@ -217,7 +225,19 @@ public class BestHouseAroundBuildings {
         grid = new int[][] {
                 {1,0},
                 {0,1}};
+        System.out.println(new BestHouseAroundBuildings().shortestDistance(grid));*/
+
+         int [][] grid = new int[][]{
+            {1,1,1,1,1,0},
+            {0,0,0,0,0,1},
+            {0,1,1,0,0,1},
+            {1,0,0,1,0,1},
+            {1,0,1,0,0,1},
+            {1,0,0,0,0,1},
+            {0,1,1,1,1,0}};
+
         System.out.println(new BestHouseAroundBuildings().shortestDistance(grid));
+
 
     }
     public int shortestDistance(int[][] grid) {
@@ -232,22 +252,42 @@ public class BestHouseAroundBuildings {
 
         boolean still = true;
         Map<Point, Integer> map = new HashMap<>();
-        Point winner = null;
+        List<Point> winners = null;
 
         while (still) {
             for (Point building : buildings) {
                 still &= building.compute(map, grid, buildings.size());
-                if (building.getWinner() != null) {
-                    winner = building.getWinner();
+                if (!building.getPossibleWinners().isEmpty()) {
+                    winners = building.getPossibleWinners();
                 }
             }
         }
 
-        System.out.println(winner);
+
+        List<Point> zeros = new ArrayList<>();
+
+        for(int i=0; i<grid.length; i++){
+            for (int j=0; j<grid[i].length; j++){
+                if(grid[i][j] == 0){
+                    zeros.add(new Point(i,j,0,new HashSet<>()));
+                }
+            }
+        }
+
+        System.out.println(winners);
+        //System.out.println("Computing distances");
         int sum = 0;
-        if(winner != null) {
-            for(Point building : buildings) {
-                sum += building.computeDistance(winner, grid);
+        Point bu = null;
+        if(winners != null) {
+            for(Point z: winners) {
+                sum = 0;
+                for (Point building : buildings) {
+                    //int s = building.computeDistance(z, grid);
+                    //System.out.println(String.format("distance(%s,%s) = %s", building, winner, s));
+                    sum += building.computeDistance(z, grid);
+
+                }
+                System.out.println(String.format("distance(%s) = %s",z, sum));
             }
         }
 
